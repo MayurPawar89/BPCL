@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/PROJ_BPCL/DBLayer/bin
+/PROJ_BPCL/DBLayer/obj
+/PROJ_BPCL/PROJ_BPCL/bin
+/PROJ_BPCL/PROJ_BPCL/obj
+/PROJ_BPCL/PROJ_BPCL/Scripts
