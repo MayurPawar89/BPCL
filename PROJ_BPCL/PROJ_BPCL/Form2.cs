@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DBLayer;
+using System.Net;
+using System.Net.Mail;
 
 namespace PROJ_BPCL
 {
@@ -38,7 +40,7 @@ namespace PROJ_BPCL
                         MessageBox.Show(string.Format("{0} is register with product and able to use the product.", Convert.ToString(txtMachineName.Text.Trim())), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         //MessageBox.Show("Re-start the application", "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         //Application.Exit();
-                        
+                        SendEmailMessage(Convert.ToString(txtMachineName.Text.Trim().ToUpper()));
                         this.ShowInTaskbar = false;
                         this.Hide();
                         Form1 ofrmSearch = new Form1();
@@ -57,6 +59,37 @@ namespace PROJ_BPCL
             else
             {
                 MessageBox.Show(string.Format("Machine Name is required."), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SendEmailMessage(string sMachineName)
+        {
+            try
+            {
+                string hostName = Dns.GetHostName(); // Retrive the Name of HOST
+                // Get the IP
+                string sIPAddress = Dns.GetHostByName(hostName).AddressList[0].ToString();
+                string sEmailBody=string.Format("Hello Sir,\n\t\tCONGRATULATIONS\nNew client is added to BPCL network. Following are the details\n\t Machine Name: {0}\n\t Machine IP Address: {1}.\n\n\nThank You",sMachineName,sIPAddress);
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                mail.From = new MailAddress("From Email Address");
+                mail.To.Add("To Email Address");
+                mail.Subject = "New BPCL client is added";
+                mail.Body = sEmailBody;
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("Username", "Password");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+                MessageBox.Show("mail Send");
+
+            }
+            catch (Exception)
+            {
+                
+                throw;
             }
         }
 
