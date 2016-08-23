@@ -49,37 +49,44 @@ namespace PROJ_BPCL
         DBAccess dbAccessLayer = null;
         private void btnGo_Click(object sender, EventArgs e)
         {
-            if (txtMachineName.Text.Trim() != "")
+            try
             {
-                if (txtPassword.Text.Trim().ToString() == "admin123")
+                if (txtMachineName.Text.Trim() != "")
                 {
-                    dbAccessLayer = new DBAccess();
-                    string sInputKey = Convert.ToString(txtMachineName.Text.Trim().ToUpper()) + "-" + Convert.ToString(txtPassword.Text.Trim());
-                    string sEncryptedKey = Encryption.EncryptToBase64String(sInputKey);
-                    if (InsertEncryptedKeyInDB(sEncryptedKey))
+                    if (txtPassword.Text.Trim().ToString() == "admin123")
                     {
-                        MessageBox.Show(string.Format("{0} is register with product and able to use the product.", Convert.ToString(txtMachineName.Text.Trim())), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        //MessageBox.Show("Re-start the application", "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        //Application.Exit();
-                        SendEmailMessage(Convert.ToString(txtMachineName.Text.Trim().ToUpper()));
-                        this.ShowInTaskbar = false;
-                        this.Hide();
-                        Form1 ofrmSearch = new Form1();
-                        ofrmSearch.WindowState = FormWindowState.Maximized;
-                        ofrmSearch.ShowDialog(this);
-                        ofrmSearch.Dispose();
-                        Application.Exit();
+                        dbAccessLayer = new DBAccess();
+                        string sInputKey = Convert.ToString(txtMachineName.Text.Trim().ToUpper()) + "-" + Convert.ToString(txtPassword.Text.Trim());
+                        string sEncryptedKey = Encryption.EncryptToBase64String(sInputKey);
+                        if (InsertEncryptedKeyInDB(sEncryptedKey))
+                        {
+                            MessageBox.Show(string.Format("{0} is register with product and able to use the product.", Convert.ToString(txtMachineName.Text.Trim())), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            //MessageBox.Show("Re-start the application", "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            //Application.Exit();
+                            SendEmailMessage(Convert.ToString(txtMachineName.Text.Trim().ToUpper()));
+                            this.ShowInTaskbar = false;
+                            this.Hide();
+                            Form1 ofrmSearch = new Form1();
+                            ofrmSearch.WindowState = FormWindowState.Maximized;
+                            ofrmSearch.ShowDialog(this);
+                            ofrmSearch.Dispose();
+                            Application.Exit();
 
+                        }
+                        else
+                            MessageBox.Show(string.Format("Either \"{0} is already register with product\" Or \"Error occured in {0} register process with product\".\nContact your application vendor.", Convert.ToString(txtMachineName.Text.Trim())), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
-                        MessageBox.Show(string.Format("Either \"{0} is already register with product\" Or \"Error occured in {0} register process with product\".\nContact your application vendor.", Convert.ToString(txtMachineName.Text.Trim())), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(string.Format("You have not provided the password or password you have enterd doesn't match. Contact your application vendor."), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
-                    MessageBox.Show(string.Format("You have not provided the password or password you have enterd doesn't match. Contact your application vendor."), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                {
+                    MessageBox.Show(string.Format("Machine Name is required."), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Machine Name is required."), "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error in product registration : " + ex.Message, "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -109,7 +116,7 @@ namespace PROJ_BPCL
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in product registration process: " + ex.Message, "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error in product registration process: " + ex.Message + "\nContact your application vendor.", "Key Generator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

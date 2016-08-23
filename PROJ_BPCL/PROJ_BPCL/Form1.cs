@@ -449,21 +449,32 @@ namespace PROJ_BPCL
 
         private void ShowHideSearchPanel()
         {
-            if (rdInformation.Checked)
+            try
             {
-                pnlSearchInformation.Visible = true;
-                pnlSearchTIN_ID.Visible = false;
-                pnlTop.Height = 189;
-            }
-            else if (rdTINID.Checked)
-            {
-                pnlSearchInformation.Visible = false;
-                pnlSearchTIN_ID.Visible = true;
-                pnlTop.Height = 132;
-                if (dgvResult.CurrentCell.ColumnIndex == 0)
+                if (rdInformation.Checked)
                 {
-                    txtAHL_TIN.Text = dgvResult.CurrentCell.Value.ToString();
+                    pnlSearchInformation.Visible = true;
+                    pnlSearchTIN_ID.Visible = false;
+                    pnlTop.Height = 189;
                 }
+                else if (rdTINID.Checked)
+                {
+                    pnlSearchInformation.Visible = false;
+                    pnlSearchTIN_ID.Visible = true;
+                    pnlTop.Height = 132;
+                    if (dgvResult.DataSource != null)
+                    {
+                        if (dgvResult.CurrentCell.ColumnIndex == 0)
+                        {
+                            string sAHLTIN = dgvResult.CurrentCell.Value.ToString();
+                            txtAHL_TIN.Text = sAHLTIN.Substring(0, sAHLTIN.Length - 2);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error at radio button selection change event" + ex.Message, "Search", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
