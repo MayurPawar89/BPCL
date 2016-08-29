@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBLayer
+namespace DatabaseLayer
 {
     class DataAccess : IDisposable
     {
@@ -836,7 +836,7 @@ namespace DBLayer
                 //        dt.TableName = "Grampanchayat";
                 //    }
                 //}
-                dbAccess.Retrive(query_procedure_name,dbParameters,out ds);
+                dbAccess.Retrive(query_procedure_name, dbParameters, out ds);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0)
                 {
                     dt = ds.Tables[0];
@@ -925,7 +925,7 @@ namespace DBLayer
                 dbParameters.Add("@AHL_TINSearchString", ahl_tintextsearchString, ParameterDirection.Input, SqlDbType.VarChar);
                 //dbParameters.Add("@NPR_TINSearchString", npr_tinsearchString, ParameterDirection.Input, SqlDbType.VarChar);
                 dbParameters.Add("@SearchWith", searchWith, ParameterDirection.Input, SqlDbType.VarChar);
-                
+
                 //using (DbCommand dbCommand = sqlDb.GetStoredProcCommand(query_procedure_name))
                 //{
 
@@ -960,7 +960,7 @@ namespace DBLayer
                 //        dt.TableName = "SearchResult";
                 //    }
                 //}
-                
+
                 dbAccess.Retrive(query_procedure_name, dbParameters, out ds);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0)
                 {
@@ -1007,7 +1007,7 @@ namespace DBLayer
                 //        dt.TableName = "PersonDetail";
                 //    }
                 //}
-                
+
                 dbAccess.Retrive(query_procedure_name, dbParameters, out ds);
                 if (ds != null && ds.Tables != null && ds.Tables.Count > 0)
                 {
